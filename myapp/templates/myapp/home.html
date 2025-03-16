@@ -1,0 +1,16 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}
+<title>My Django App</title>
+{% endblock %}
+
+{% block content %}
+
+<h1>Name: {{name}}</h1>
+<p>Age: {{age}}</p>
+
+{% for hoppy in hoppies %}
+<li>{{hoppy}}</li>
+{% endfor %}
+
+{% endblock %}
