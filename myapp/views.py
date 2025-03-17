@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from .models import UserProfile
-from .forms import UserRegtrationForm, LoginForm
+from .forms import RegisterForm, LoginForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -44,13 +44,18 @@ def delete_user(request):
 # Register Function
 def register_user(request):
     if request.method == "POST":
-        form = UserRegtrationForm(request.POST)  # Get user input
+        form = RegisterForm(request.POST)  # Get user input
         if form.is_valid():
+            # commit=False => that tell Django to store form in user But don't Store in dataBase Because we need to make some Methods on password
+            user = form.save(commit=False)
+            # .set_password() is A Function That Hashes The password into a Secure Code
+            user.set_password(form.cleaned_data["password"])
             form.save()  # Save user to database
-            return redirect("success")  # Redirect to success page
+            login(request, user)  # Automatically log the user in
+            return redirect("dashboard")  # Redirect to success page
 
     else:
-        form = UserRegtrationForm()  # Empty form for GET request
+        form = RegisterForm()  # Empty form for GET request
 
     return render(request, "myapp/register.html", {"form": form})
 
