@@ -74,6 +74,8 @@ def login_user(request):
             if user is not None:
                 login(request, user)
                 return redirect("dashboard")
+            else:
+                return render(request, "myapp/login.html", {"form": form, "error": "Invalid username or password"})
     else:
         form = LoginForm()
 
