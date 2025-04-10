@@ -20,3 +20,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
+
+    @staticmethod
+    def get_or_create_profile(user):
+        profile, created = Profile.objects.get_or_create(user=user)
+        return profile
+        """
+        The get_or_create() method is a shortcut that retrieves an object if it exists or creates it if it doesn't.
+        It returns a tuple (object, created), where created is a boolean indicating whether the object was created or retrieved.
+        """
